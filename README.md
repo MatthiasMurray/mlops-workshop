@@ -19,6 +19,7 @@ Repository for educational workshop on building and deploying API endpoints for 
 6. Push your change -- assuming you named your branch `trying-it-out` you'll run `git push origin trying-it-out`. You can ensure that your forked repo is the remote (rather than the original) by running `git remote -v` and making sure that `origin` is on your GitHub profile.
 7. Go to your GitHub repo in the browser and click Pull Requests in the bar above the code. You want to create a pull request that merges the branch you pushed into your `main` branch.
 8. Merge your branch into `main` if it looks good -- this should kick off your pipeline! You can watch its progress by opening up your CodePipeline in AWS and clicking View Details. You may need to refresh for it to continue to show what's going on. It takes about 5 minutes to complete in its current form, it could take up to 15 minutes if you comment out line 4 in `services/textemote/build.sh`.
+9. Checking if this works
 
 # Testing your new service
 1. If your pipeline finished successfully, the end of the logs should have printed out a URL where your service lives. Copy this URL, paste it into a browser, and add `/health` at the end. If it is running successfully, you should see `{'status': 'ok'}` in the browser. You can also go look at the deployment by opening up Elastic Container Service in AWS.
