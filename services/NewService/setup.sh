@@ -4,6 +4,7 @@
 mkdir -p app/data
 mkdir -p app/model
 
+python -c """
 import boto3
 import json
 import os
@@ -16,6 +17,7 @@ def get_kaggle_api_key(secret_name):
   os.environ[“KAGGLE_USERNAME”] = secret[“username”]
   os.environ[“KAGGLE_KEY”] = secret[“key”]
 get_kaggle_api_key("mkuce-kaggleAPI")
+"""
 
 # Download the dataset using Kaggle API
 echo "Downloading house price dataset..."
