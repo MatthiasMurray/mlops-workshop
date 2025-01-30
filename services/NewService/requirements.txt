@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+requests
+pandas
+scikit-learn
+numpy
+kaggle
+python-dotenv
+boto3
+pydantic
