@@ -1,6 +1,15 @@
 # mlops-workshop
 Repository for educational workshop on building and deploying API endpoints for ML models to AWS
 
+## Current operating note
+
+This repo remains reusable for future workshops, but the live runtime is intentionally parked to avoid standing AWS spend when you are not actively teaching.
+
+- Runtime park/resume is controlled by `SERVICE_DESIRED_COUNT` in `deploy-vars.txt`.
+- `SERVICE_DESIRED_COUNT=0` keeps deployed services scaled down after pipeline runs.
+- Set `SERVICE_DESIRED_COUNT=1` before teaching again, then trigger the relevant pipeline to resume runtime.
+- Account and IAM Identity Center governance should move to `aws-org-mgt`; this repo should stay focused on workshop application/runtime deployment.
+
 # Onboarding
 1. To begin the workshop, fork this repo to your github profile (keep the name as mlops-workshop)
 2. Let me know when you have forked the repo. I will run the `infra_setup/create_pipeline_service_roles.sh` and `infra_setup/create_pipelines.sh` on your username and github repo profile name
@@ -9,6 +18,23 @@ Repository for educational workshop on building and deploying API endpoints for 
 5. Select your connection. Your username was given to you when you signed up -- my username is `mmur`, so my connection is `mmur-connection`. Please do not touch other connections -- I've tried to limit access but things can slip through.
 6. Click the `Update pending connection` button. A new browser window will pop up and should ask you to authorize GitHub access, or ask you to sign in first if you haven't in awhile in this browser. Once it has been approved, click the button to `Install new app` and approve GitHub once more -- **LIMIT ACCESS TO JUST YOUR FORKED REPO, DO NOT ALLOW ACCESS TO ALL** -- this creates a two-way connection, which is what we need. You can verify it was successful by going to your GitHub profile, clicking your profile icon (top right) and clicking the Settings button, then scrolling down to the bottom left and selecting Applications. You should see AWS Connector for GitHub under both the Installed GitHub Apps and Authorized GitHub Apps tabs.
 7. Your CodePipeline is set up! Now when you merge to `main` on your forked repo, the build will trigger and create services with your username as a prefix
+
+## Park and resume
+
+Use repo config instead of ad hoc console changes when possible.
+
+To keep workshop runtime off while preserving the pattern:
+
+1. Leave `SERVICE_DESIRED_COUNT=0` in `deploy-vars.txt`.
+2. If a pipeline runs, it will keep ECS services scaled down.
+
+To teach again later:
+
+1. Set `SERVICE_DESIRED_COUNT=1` in `deploy-vars.txt`.
+2. Commit and merge the change to the repo used by the pipeline, or otherwise trigger the intended pipeline run.
+3. Verify the target ECS service and ALB path come back healthy.
+
+This repo does not fully manage account governance, budgets, or IAM Identity Center. Those controls should live in `aws-org-mgt`.
 
 # Trying it out
 1. Clone your forked repo down to your local machine

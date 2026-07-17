@@ -3,6 +3,7 @@ AWS_REGION=$2
 SERVICE_NAME=$3
 SERVICE_TYPE=$4
 PRIORITY=$5
+DESIRED_COUNT=${6:-1}
 
 # create ecs task definition
 sed -e "s;#AWS_ACCOUNT_ID#;$AWS_ACCOUNT_ID;g" \
@@ -26,7 +27,7 @@ fi
 SERVICE_EXISTS=$(aws ecs describe-services --cluster mlops-workshop-cluster --services $SERVICE_NAME --query 'services[0].serviceName' --output text)
 if [ "$SERVICE_EXISTS" == "ACTIVE" ]; then
     echo "Service exists. Updating the service..."
-    aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment
+    aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --desired-count $DESIRED_COUNT --force-new-deployment
 else
     echo "Service does not yet exist. Creating ECS service..."
     echo "Setting up ALB routing for $SERVICE_NAME..."
@@ -40,7 +41,7 @@ else
         --cluster $CLUSTER_NAME \
         --service-name $SERVICE_NAME \
         --task-definition $SERVICE_NAME \
-        --desired-count 1 \
+        --desired-count $DESIRED_COUNT \
         --launch-type FARGATE \
         --network-configuration "awsvpcConfiguration={subnets=[subnet-061a6219b4c4f846a,subnet-0e4dcb4f98967aaec],securityGroups=[sg-09e220f656a51ebb9],assignPublicIp=ENABLED}" \
         --load-balancers "targetGroupArn=$TG_ARN,containerName=$SERVICE_NAME,containerPort=80"

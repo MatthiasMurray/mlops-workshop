@@ -79,7 +79,7 @@ phases:
           cd ../../;
           PRIORITY_IF_NEW=$(bash get_new_priority_level.sh);
           cd services/$service;
-          bash deploy.sh $AWS_ACCOUNT_ID $AWS_REGION $SERVICE_NAME $SERVICE_TYPE $PRIORITY_IF_NEW;
+          bash deploy.sh $AWS_ACCOUNT_ID $AWS_REGION $SERVICE_NAME $SERVICE_TYPE $PRIORITY_IF_NEW ${SERVICE_DESIRED_COUNT:-1};
           echo Deployed $SERVICE_NAME to ECS;
           deactivate;
           cd ../..;
